@@ -1,0 +1,45 @@
+{
+  "name": "grunt-npm-install-all",
+  "description": "Run npm install in all matching directories with package.json file (exclude package.json files in already installed node_modules directories)",
+  "version": "0.0.1",
+  "homepage": "https://github.com/tomastrajan/grunt-npm-install-all",
+  "author": {
+    "name": "Tomas Trajan",
+    "email": "tomas.trajan@gmail.com",
+    "url": "http://www.medium.com/@tomastrajan"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tomastrajan/grunt-npm-install-all"
+  },
+  "bugs": {
+    "url": "https://github.com/tomastrajan/grunt-npm-install-all/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/tomastrajan/grunt-npm-install-all/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "^0.9.2",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-nodeunit": "^0.3.3",
+    "grunt": "~0.4.5"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.5"
+  },
+  "keywords": [
+    "gruntplugin"
+  ],
+  "dependencies": {
+    "lodash": "~3.7.0"
+  }
+}
