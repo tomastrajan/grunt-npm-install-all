@@ -28,21 +28,14 @@ exports['npm-install-all'] = {
         done();
     },
     default_options: function (test) {
-        test.expect(1);
 
-        var actual = grunt.file.read('tmp/default_options');
-        var expected = grunt.file.read('test/expected/default_options');
-        test.equal(actual, expected, 'should describe what the default behavior is.');
+        var installedNodeModulesPaths = grunt.file.expand('test/fixtures/**/node_modules');
+        test.equal(installedNodeModulesPaths.length, 4, 'Correct number of installed node_modules folder found');
 
-        test.done();
-    },
-    custom_options: function (test) {
-        test.expect(1);
-
-        var actual = grunt.file.read('tmp/custom_options');
-        var expected = grunt.file.read('test/expected/custom_options');
-        test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
+        installedNodeModulesPaths.forEach(function(path) {
+           test.ok(grunt.file.exists(path + '/lodash'), 'Dependency installed');
+        });
 
         test.done();
-    },
+    }
 };

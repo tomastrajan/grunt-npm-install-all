@@ -25,31 +25,20 @@ module.exports = function (grunt) {
 
         // Before generating any new files, remove any previously-created files.
         clean: {
-            tests: ['tmp']
+            tests: ['test/**/node_modules/']
         },
 
         // Configuration to be run (and then tested).
         'npm-install-all': {
             default_options: {
                 options: {},
-                files: {
-                    'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
-                }
-            },
-            custom_options: {
-                options: {
-                    separator: ': ',
-                    punctuation: ' !!!'
-                },
-                files: {
-                    'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
-                }
+                src: ['test/fixtures/**']
             }
         },
 
         // Unit tests.
         nodeunit: {
-            tests: ['test/*.test.js']
+            tests: ['test/*.spec.js']
         }
 
     });

@@ -1,0 +1,10 @@
+{
+  "name": "module",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/testdata"
+  },
+  "dependencies": {
+    "lodash": "3.7.0"
+  }
+}

@@ -17,6 +17,7 @@ module.exports = function (grunt) {
 
     grunt.registerMultiTask('npm-install-all', 'Run npm install in all matching directories with package.json file (exclude package.json files in already installed node_modules directories)', function () {
 
+
         var exec = require('child_process').exec,
             done = this.async(),
 
@@ -31,8 +32,10 @@ module.exports = function (grunt) {
 
         this.files.forEach(function (file) {
             file.src.forEach(function (path) {
-                if (options.includeNodeModules || path.indexOf('node_modules') === -1) {
-                    paths.push(path.replace('package.json', ''));
+                if (options.includeNodeModules || path.indexOf('node_modules') === -1 ) {
+                    if (path.indexOf('package.json') > -1){
+                        paths.push(path.replace('package.json', ''));
+                    }
                 }
             });
         });
@@ -40,14 +43,21 @@ module.exports = function (grunt) {
         paths.forEach(function (path) {
             exec('npm install', {cwd: path}, function (err, stdout, stderr) {
                 doneCounter++;
-                if (stderr || err) {
-                    grunt.log.error(stderr || err);
+                // Fix - Teamcity considers npm download info with status 200 (Success) & 304 (Not modified) as error, skip those cases
+                if (stderr && !(_.some(['http 304', 'http 200'], function(ignoredError) { return stderr.indexOf(ignoredError) > -1; }))) {
+                    grunt.log.error('ERROR (stdeer): ' + path + stderr);
                     pathsError.push(path);
+                } else if (err) {
+                    grunt.log.error('ERROR (err): ' + path + err);
+                    if (!_.contains(pathsError, path)) {
+                        pathsError.push(path);
+                    }
                 } else {
+                    grunt.log.ok([path]);
                     pathsSuccess.push(path);
                 }
                 if (stdout) {
-                    console.error(stdout);
+                    console.log('INFO: ', stdout);
                 }
                 if (doneCounter === paths.length) {
                     if (pathsSuccess.length) {
@@ -61,8 +71,13 @@ module.exports = function (grunt) {
                         pathsError.forEach(function (path) {
                             grunt.log.writeln('  ' + path['red'].bold);
                         });
+                        grunt.log.writeln('');
                     }
-                    done();
+                    if (pathsError.length) {
+                        done(false);
+                    } else {
+                        done();
+                    }
                 }
             });
         });
